@@ -13,6 +13,14 @@ class Canvas {
 		}
 	}
 
+	clear() {
+		for (let h = 0; h < this.h; h++) {
+			for (let w = 0; w < this.w; w++) {
+				this.arr[h][w] = ' ';
+			}
+		}
+	}
+
 	getCharAtPos(x, y) {
 		return this.arr[y][x];
 	}
