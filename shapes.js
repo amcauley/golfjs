@@ -1,4 +1,4 @@
-class Object {
+class Shape {
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
@@ -9,7 +9,7 @@ class Object {
 	}
 }
 
-class Line extends Object {
+class Line extends Shape {
 	constructor (x1, y1, x2, y2) {
 		super(x1, y1);
 		this.x2 = x2;
@@ -64,7 +64,7 @@ class Line extends Object {
 	}
 }
 
-class Rectangle extends Object {
+class Rectangle extends Shape {
 	constructor (x, y, w, h) {
 		super(x, y);
 		this.w = w;
@@ -80,7 +80,7 @@ class Rectangle extends Object {
 	}
 }
 
-class Circle extends Object {
+class Circle extends Shape {
 	constructor (x, y, r) {
 		super(x, y);
 		this.r = r;

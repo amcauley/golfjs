@@ -7,7 +7,9 @@ function onClick(e) {
 	//r.drawOnCanvas(gc);
 
 	var c = new Circle(cPos[0], cPos[1], 10);
-	c.drawOnCanvas(gc);
+	//c.drawOnCanvas(gc);
+	gom.add(c, 'C');
+	gom.drawOnCanvas(gc);
 }
 
 document.addEventListener("click", onClick);
@@ -18,7 +20,10 @@ function onMove(e) {
 	cPos = gc.posToCharIdx(pos[0], pos[1]);
 
 	var l = new Line(0, 0, cPos[0], cPos[1]);
-	l.drawOnCanvas(gc);
+	//l.drawOnCanvas(gc);
+	gom.clearTag('L');
+	gom.add(l, 'L');
+	gom.drawOnCanvas(gc);
 }
 
 document.addEventListener("mousemove", onMove);

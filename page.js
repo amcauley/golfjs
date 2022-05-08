@@ -1,5 +1,3 @@
-var gc = new Canvas(WIDTH, HEIGHT);
-
 // Convert a pixel page coordinate to an x, y coordinate using character position indices.
 // Allow fractional indices, i.e. 1.5. The caller can cast to int if needed.
 // Return a list of the index values [x, y].

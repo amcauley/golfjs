@@ -48,3 +48,5 @@ class Canvas {
 		return d;
 	}
 }
+
+var gc = new Canvas(WIDTH, HEIGHT);
