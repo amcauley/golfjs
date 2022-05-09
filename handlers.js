@@ -20,7 +20,7 @@ function onMove(e) {
 
 	var l = new Line(0, 0, cPos[0], cPos[1]);
 	gom.clearTag('L');
-	gom.add(l, 'L');
+	gom.add(l, 'L', 0);
 	gom.drawOnCanvas(gc);
 }
 

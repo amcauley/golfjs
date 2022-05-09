@@ -29,6 +29,11 @@ class Canvas {
 		return this.arr[y][x];
 	}
 
+	// TODO: use data structure and record what we're overwriting.
+	// Will come into play when non-padded shape overlaps padded shape,
+	// ex. line overlapping circle. The padded portions of the non-padded line
+	// should let the underlying circle color through.
+	// Also, rename to something like setSymbolAtPos.
 	setCharAtPos(c, x, y) {
 		if (x >= 0 && y >= 0 && x < WIDTH && y < HEIGHT) {
 			this.arr[y][x] = c;

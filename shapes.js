@@ -1,3 +1,4 @@
+// TODO: Pass via data struct
 var SHAPE_PREFIX_NO_PAD = '__n';
 
 class Shape {
