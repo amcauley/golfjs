@@ -1,3 +1,5 @@
+var SHAPE_PREFIX_NO_PAD = '__n';
+
 class Shape {
 	constructor(x, y) {
 		this.x = x;
@@ -17,7 +19,8 @@ class Line extends Shape {
 	}
 
 	drawOnCanvas(c) {
-		var LINE_SYMBOL = 'L';
+		// TODO: Pass symbols in data struct instead of as a string prefix
+		var LINE_SYMBOL = SHAPE_PREFIX_NO_PAD + 'L';
 
 		var xLow = Math.min(this.x, this.x2);
 		var xHigh = Math.max(this.x, this.x2);
@@ -28,7 +31,7 @@ class Line extends Shape {
 		var yDelta = yHigh - yLow;
 		var d2 = xDelta * xDelta + yDelta * yDelta;
 
-		console.log("l xl " + xLow + ", xh " + xHigh + ", yl " + yLow + ", yh " + yHigh + ", d2 " + d2);
+		//console.log("l xl " + xLow + ", xh " + xHigh + ", yl " + yLow + ", yh " + yHigh + ", d2 " + d2);
 
 		if (d2 == 0) {
 			return;
@@ -38,7 +41,7 @@ class Line extends Shape {
 		var xDirNorm = xDelta / norm;
 		var yDirNorm = yDelta / norm;
 
-		console.log("xN " + xDirNorm + ", yN " + yDirNorm);
+		//console.log("xN " + xDirNorm + ", yN " + yDirNorm);
 
 		var x = xLow;
 		var y = yLow;
@@ -91,7 +94,11 @@ class Circle extends Shape {
 			for (let y = -this.r; y <= this.r; y++) {
 				var d2 = x * x + y * y;
 				if (d2 <= this.r * this.r) {
-					c.setCharAtPos('C', this.x + x, this.y + y);
+					// TODO: Set dictionary / class instead of combining control and representation in a string.
+					c.setCharAtPos(
+						'<font style="background-color:red;">&nbsp;</font>',
+						this.x + x, this.y + y
+					);
 				}
 			}
 		}

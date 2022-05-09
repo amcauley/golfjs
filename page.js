@@ -4,7 +4,7 @@
 function pxToPos(pxX, pxY) {
 	var c = document.getElementById('canvasDiv');
 	var r = c.getBoundingClientRect();
-	console.log('t ' + r.top + ', b ' + r.bottom + ', l ' + r.left + ', r ' + r.right);
+	//console.log('t ' + r.top + ', b ' + r.bottom + ', l ' + r.left + ', r ' + r.right);
 
 	// Adjust by 0.5 to account for any char padding. The center char is considered the integer idx.
 	var x = (pxX - r.left) / (r.right - r.left) * WIDTH - 0.5;
@@ -13,11 +13,6 @@ function pxToPos(pxX, pxY) {
 	var y = (pxY - r.top) / (r.bottom - r.top) * HEIGHT - 0.5;
 	y = Math.min(HEIGHT - 0.5, Math.max(-0.5, y));
 
-	console.log('px ' + pxX + ', ' + pxY + ' -> idx ' + x + ', ' + y);
+	//console.log('px ' + pxX + ', ' + pxY + ' -> idx ' + x + ', ' + y);
 	return [x, y];
-}
-
-function draw(c, s) {
-	var c = document.getElementById('canvasDiv');
-	c.innerHTML = gc.getHTML();
 }

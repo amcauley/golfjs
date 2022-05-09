@@ -6,7 +6,7 @@ function onClick(e) {
 	//var r = new Rectangle(cPos[0], cPos[1], 10, 20);
 	//r.drawOnCanvas(gc);
 
-	var c = new Circle(cPos[0], cPos[1], 10);
+	var c = new Circle(cPos[0], cPos[1], 5);
 	gom.add(c, 'C', 1);
 	gom.drawOnCanvas(gc);
 }
@@ -14,7 +14,7 @@ function onClick(e) {
 document.addEventListener("click", onClick);
 
 function onMove(e) {
-	console.log("m x " + e.pageX + ", y " + e.pageY);
+	//console.log("m x " + e.pageX + ", y " + e.pageY);
 	pos = pxToPos(e.pageX, e.pageY);
 	cPos = gc.posToCharIdx(pos[0], pos[1]);
 
@@ -25,6 +25,11 @@ function onMove(e) {
 }
 
 document.addEventListener("mousemove", onMove);
+
+function draw(c, s) {
+	var c = document.getElementById('canvasDiv');
+	c.innerHTML = gc.getHTML();
+}
 
 function init() {
 	var c = document.getElementById('canvasDiv');
