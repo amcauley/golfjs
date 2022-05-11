@@ -1,43 +1,20 @@
-function get2dArray(w, h, c='') {
-	arr = [];
-	for (let hh = 0; hh < h; hh++) {
-		let a = [];
-		for (let ww = 0; ww < w; ww++) {
-			a.push(c);
-		}
-		arr.push(a);
-	}
-	return arr;
-}
-
 class Canvas {
 	constructor(w, h) {
 		this.w = w;
 		this.h = h;
-		this.arr = get2dArray(w, h, ' ');
+		this.arr = new Array2d(w, h, ' ');
 	}
 
 	clear() {
 		for (let h = 0; h < this.h; h++) {
 			for (let w = 0; w < this.w; w++) {
-				this.arr[h][w] = ' ';
+				this.arr.setCharAtPos(' ', w, h);
 			}
 		}
 	}
 
-	getCharAtPos(x, y) {
-		return this.arr[y][x];
-	}
-
-	// TODO: use data structure and record what we're overwriting.
-	// Will come into play when non-padded shape overlaps padded shape,
-	// ex. line overlapping circle. The padded portions of the non-padded line
-	// should let the underlying circle color through.
-	// Also, rename to something like setSymbolAtPos.
 	setCharAtPos(c, x, y) {
-		if (x >= 0 && y >= 0 && x < WIDTH && y < HEIGHT) {
-			this.arr[y][x] = c;
-		}
+		this.arr.setCharAtPos(c, x, y);
 	}
 
 	// Convert possibly-fractional x, y indices to an index for the closest character
@@ -58,7 +35,7 @@ class Canvas {
 
 		for (let y = 0; y < HEIGHT; y++) {
 			for (let x = 0; x < WIDTH; x++) {
-				let c = this.getCharAtPos(x, y);
+				let c = this.arr.getCharAtPos(x, y);
 
 				let bNoPad = c.startsWith(SHAPE_PREFIX_NO_PAD);
 
