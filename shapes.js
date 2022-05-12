@@ -62,19 +62,26 @@ class Line extends Shape {
 }
 
 class Circle extends Shape {
-	constructor (x, y, r, color='black') {
+	constructor (x, y, r, color='black', bPad=true) {
 		super(x, y);
 		this.r = r;
 		this.color = color;
+		this.bPad = bPad;
 	}
 
 	drawOn2dArray(a) {
+		var padPrefix = '';
+		if (!this.bPad) {
+			padPrefix = SHAPE_PREFIX_NO_PAD;
+		}
+
 		for (let x = -this.r; x <= this.r; x++) {
 			for (let y = -this.r; y <= this.r; y++) {
 				var d2 = x * x + y * y;
 				if (d2 <= this.r * this.r) {
 					// TODO: Set dictionary / class instead of combining control and representation in a string.
 					a.setSymbolAtPos(
+						padPrefix +
 						'<font style="background-color:' + this.color + ';">&nbsp;</font>',
 						this.x + x, this.y + y
 					);
