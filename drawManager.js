@@ -1,4 +1,7 @@
-class ObjectManager {
+// Manager for handling various drawable objects.
+// Organizes them based on tags for individual handling.
+// Combine them and send off the combined map to Canvas for drawing.
+class DrawManager {
 	constructor() {
 		this.objectsByTag = {};
 		// Map depth to a list of tags at that depth.
@@ -55,4 +58,4 @@ class ObjectManager {
 	}
 }
 
-var gom = new ObjectManager();
+var gdm = new DrawManager();

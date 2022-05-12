@@ -1,5 +1,5 @@
 // TODO: Pass via data struct
-var SHAPE_PREFIX_NO_PAD = '__n';
+var SHAPE_PREFIX_NO_PAD = '_n';
 
 class Shape {
 	constructor(x, y) {
@@ -57,30 +57,14 @@ class Line extends Shape {
 				break;
 			}
 
-			c.setCharAtPos(LINE_SYMBOL, Math.round(x), Math.round(y));
+			c.setSymbolAtPos(LINE_SYMBOL, Math.round(x), Math.round(y));
 
 			x += xDirNorm;
 			y += yDirNorm;
 		}
 
 		// Add back in the final position to account for rounding / truncation
-		c.setCharAtPos(LINE_SYMBOL, xHigh, yHigh);
-	}
-}
-
-class Rectangle extends Shape {
-	constructor (x, y, w, h) {
-		super(x, y);
-		this.w = w;
-		this.h = h;
-	}
-
-	drawOnCanvas(c) {
-		for (let h = 0; h < this.h; h++) {
-			for (let w = 0; w < this.w; w++) {
-				c.setCharAtPos('R', this.x + w, this.y + h);
-			}
-		}
+		c.setSymbolAtPos(LINE_SYMBOL, xHigh, yHigh);
 	}
 }
 
@@ -96,7 +80,7 @@ class Circle extends Shape {
 				var d2 = x * x + y * y;
 				if (d2 <= this.r * this.r) {
 					// TODO: Set dictionary / class instead of combining control and representation in a string.
-					c.setCharAtPos(
+					c.setSymbolAtPos(
 						'<font style="background-color:red;">&nbsp;</font>',
 						this.x + x, this.y + y
 					);

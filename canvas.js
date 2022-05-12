@@ -8,13 +8,13 @@ class Canvas {
 	clear() {
 		for (let h = 0; h < this.h; h++) {
 			for (let w = 0; w < this.w; w++) {
-				this.arr.setCharAtPos(' ', w, h);
+				this.arr.setSymbolAtPos(' ', w, h);
 			}
 		}
 	}
 
-	setCharAtPos(c, x, y) {
-		this.arr.setCharAtPos(c, x, y);
+	setSymbolAtPos(s, x, y) {
+		this.arr.setSymbolAtPos(s, x, y);
 	}
 
 	// Convert possibly-fractional x, y indices to an index for the closest character
@@ -35,20 +35,20 @@ class Canvas {
 
 		for (let y = 0; y < HEIGHT; y++) {
 			for (let x = 0; x < WIDTH; x++) {
-				let c = this.arr.getCharAtPos(x, y);
+				let s = this.arr.getSymbolAtPos(x, y);
 
-				let bNoPad = c.startsWith(SHAPE_PREFIX_NO_PAD);
+				let bNoPad = s.startsWith(SHAPE_PREFIX_NO_PAD);
 
 				let xCenter = x * (1 + 2 * CHAR_PAD_H) + CHAR_PAD_H;
 				let yCenter = y * (1 + 2 * CHAR_PAD_V) + CHAR_PAD_V;
 
 				if (bNoPad) {
-					padGrid[yCenter][xCenter] = c.substring(SHAPE_PREFIX_NO_PAD.length);
+					padGrid[yCenter][xCenter] = s.substring(SHAPE_PREFIX_NO_PAD.length);
 				}
 				else {
 					for (let dy = -CHAR_PAD_V; dy <= CHAR_PAD_V; dy++) {
 						for (let dx = -CHAR_PAD_H; dx <= CHAR_PAD_H; dx++) {
-							padGrid[yCenter + dy][xCenter + dx] = c;
+							padGrid[yCenter + dy][xCenter + dx] = s;
 						}
 					}
 				}
@@ -60,11 +60,11 @@ class Canvas {
 
 		for (let y = 0; y < hPadded; y++) {
 			for (let x = 0; x < wPadded; x++) {
-				let c = padGrid[y][x];
-				if (c == ' ') {
-					c = '&nbsp;';
+				let s = padGrid[y][x];
+				if (s == ' ') {
+					s = '&nbsp;';
 				}
-				d += c;
+				d += s;
 			}
 			d += '<br/>';
 		}

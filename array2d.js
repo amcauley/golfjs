@@ -1,9 +1,9 @@
-function get2dArray(w, h, c='') {
+function get2dArray(w, h, s='') {
 	arr = [];
-	for (let hh = 0; hh < h; hh++) {
+	for (let y = 0; y < h; y++) {
 		let a = [];
-		for (let ww = 0; ww < w; ww++) {
-			a.push(c);
+		for (let x = 0; x < w; x++) {
+			a.push(s);
 		}
 		arr.push(a);
 	}
@@ -11,11 +11,11 @@ function get2dArray(w, h, c='') {
 }
 
 class Array2d {
-	constructor(w, h, c='') {
-		this.a = get2dArray(w, h, c);
+	constructor(w, h, s='') {
+		this.a = get2dArray(w, h, s);
 	}
 
-	getCharAtPos(x, y) {
+	getSymbolAtPos(x, y) {
 		return this.a[y][x];
 	}
 
@@ -24,9 +24,9 @@ class Array2d {
 	// ex. line overlapping circle. The padded portions of the non-padded line
 	// should let the underlying circle color through.
 	// Also, rename to something like setSymbolAtPos.
-	setCharAtPos(c, x, y) {
+	setSymbolAtPos(s, x, y) {
 		if (x >= 0 && y >= 0 && x < WIDTH && y < HEIGHT) {
-			this.a[y][x] = c;
+			this.a[y][x] = s;
 		}
 	}
 }
