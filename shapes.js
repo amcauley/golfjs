@@ -7,8 +7,8 @@ class Shape {
 		this.y = y;
 	}
 
-	drawOnCanvas(c) {
-		console.log('Base clase Object has no drawOnCanvas implementation.');
+	drawOn2dArray(a) {
+		console.log('Base clase Object has no drawOn2dArray implementation.');
 	}
 }
 
@@ -19,7 +19,7 @@ class Line extends Shape {
 		this.y2 = y2;
 	}
 
-	drawOnCanvas(c) {
+	drawOn2dArray(a) {
 		// TODO: Pass symbols in data struct instead of as a string prefix
 		var LINE_SYMBOL = SHAPE_PREFIX_NO_PAD + 'L';
 
@@ -57,14 +57,14 @@ class Line extends Shape {
 				break;
 			}
 
-			c.setSymbolAtPos(LINE_SYMBOL, Math.round(x), Math.round(y));
+			a.setSymbolAtPos(LINE_SYMBOL, Math.round(x), Math.round(y));
 
 			x += xDirNorm;
 			y += yDirNorm;
 		}
 
 		// Add back in the final position to account for rounding / truncation
-		c.setSymbolAtPos(LINE_SYMBOL, xHigh, yHigh);
+		a.setSymbolAtPos(LINE_SYMBOL, xHigh, yHigh);
 	}
 }
 
@@ -74,13 +74,13 @@ class Circle extends Shape {
 		this.r = r;
 	}
 
-	drawOnCanvas(c) {
+	drawOn2dArray(a) {
 		for (let x = -this.r; x <= this.r; x++) {
 			for (let y = -this.r; y <= this.r; y++) {
 				var d2 = x * x + y * y;
 				if (d2 <= this.r * this.r) {
 					// TODO: Set dictionary / class instead of combining control and representation in a string.
-					c.setSymbolAtPos(
+					a.setSymbolAtPos(
 						'<font style="background-color:red;">&nbsp;</font>',
 						this.x + x, this.y + y
 					);

@@ -53,7 +53,7 @@ class DrawManager {
 
 		var objects = this.getAll();
 		for (const o of objects) {
-			o.drawOnCanvas(c);
+			o.drawOn2dArray(c);
 		}
 	}
 }
