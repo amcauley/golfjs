@@ -18,7 +18,7 @@ class Canvas {
 	}
 
 	// Convert possibly-fractional x, y indices to an index for the closest character
-	posToCharIdx(x, y) {
+	posToIdx(x, y) {
 		var cx = Math.max(0, Math.min(WIDTH - 1, Math.round(x)));
 		var cy = Math.max(0, Math.min(HEIGHT - 1, Math.round(y)));
 

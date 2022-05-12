@@ -23,16 +23,9 @@ class Line extends Shape {
 		// TODO: Pass symbols in data struct instead of as a string prefix
 		var LINE_SYMBOL = SHAPE_PREFIX_NO_PAD + 'L';
 
-		var xLow = Math.min(this.x, this.x2);
-		var xHigh = Math.max(this.x, this.x2);
-		var yLow = Math.min(this.y, this.y2);
-		var yHigh = Math.max(this.y, this.y2);
-
-		var xDelta = xHigh - xLow;
-		var yDelta = yHigh - yLow;
+		var xDelta = this.x2 - this.x;
+		var yDelta = this.y2 - this.y;
 		var d2 = xDelta * xDelta + yDelta * yDelta;
-
-		//console.log("l xl " + xLow + ", xh " + xHigh + ", yl " + yLow + ", yh " + yHigh + ", d2 " + d2);
 
 		if (d2 == 0) {
 			return;
@@ -44,13 +37,13 @@ class Line extends Shape {
 
 		//console.log("xN " + xDirNorm + ", yN " + yDirNorm);
 
-		var x = xLow;
-		var y = yLow;
+		var x = this.x;
+		var y = this.y;
 
 		while (true) {
 			// Current line distance
-			var xld = x - xLow;
-			var yld = y - yLow;
+			var xld = x - this.x;
+			var yld = y - this.y;
 			var ld2 = xld * xld + yld * yld;
 
 			if (ld2 > d2) {
@@ -64,14 +57,15 @@ class Line extends Shape {
 		}
 
 		// Add back in the final position to account for rounding / truncation
-		a.setSymbolAtPos(LINE_SYMBOL, xHigh, yHigh);
+		a.setSymbolAtPos(LINE_SYMBOL, this.x2, this.y2);
 	}
 }
 
 class Circle extends Shape {
-	constructor (x, y, r) {
+	constructor (x, y, r, color='black') {
 		super(x, y);
 		this.r = r;
+		this.color = color;
 	}
 
 	drawOn2dArray(a) {
@@ -81,7 +75,7 @@ class Circle extends Shape {
 				if (d2 <= this.r * this.r) {
 					// TODO: Set dictionary / class instead of combining control and representation in a string.
 					a.setSymbolAtPos(
-						'<font style="background-color:red;">&nbsp;</font>',
+						'<font style="background-color:' + this.color + ';">&nbsp;</font>',
 						this.x + x, this.y + y
 					);
 				}

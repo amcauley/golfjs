@@ -1,6 +1,7 @@
 // Manager for handling various drawable objects.
 // Organizes them based on tags for individual handling.
 // Combine them and send off the combined map to Canvas for drawing.
+// Should be useful, e.g., for any caching logic.
 class DrawManager {
 	constructor() {
 		this.objectsByTag = {};
