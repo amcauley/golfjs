@@ -16,6 +16,14 @@ class Scene {
 		this.cursorY = y;
 	}
 
+	onClick(x, y) {
+		this.ball.setDestination(x, y);
+	}
+
+	update() {
+		this.ball.update();
+	}
+
 	drawOnCanvas(c) {
 		this.dm.clearTag('B');
 		this.dm.add(this.ball, 'B', 0);

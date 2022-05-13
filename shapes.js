@@ -19,6 +19,49 @@ class Line extends Shape {
 		this.y2 = y2;
 	}
 
+	getPath() {
+		var xDelta = this.x2 - this.x;
+		var yDelta = this.y2 - this.y;
+		var d2 = xDelta * xDelta + yDelta * yDelta;
+
+		if (d2 == 0) {
+			return [this.x, this.y];
+		}
+
+		var norm = Math.sqrt(d2);
+		var xDirNorm = xDelta / norm;
+		var yDirNorm = yDelta / norm;
+
+		var x = this.x;
+		var y = this.y;
+
+		var path = [];
+		while (true) {
+			// Current line distance
+			var xld = x - this.x;
+			var yld = y - this.y;
+			var ld2 = xld * xld + yld * yld;
+
+			if (ld2 > d2) {
+				break;
+			}
+
+			path.push([Math.round(x), Math.round(y)]);
+
+			x += xDirNorm;
+			y += yDirNorm;
+		}
+
+		var last = path[path.length - 1];
+		var x2Round = Math.round(this.x2);
+		var y2Round = Math.round(this.y2);
+		if ((last[0] != x2Round) || (last[1] != y2Round)) {
+			path.push([x2Round, y2Round]);
+		}
+
+		return path;
+	}
+
 	drawOn2dArray(a) {
 		// TODO: Pass symbols in data struct instead of as a string prefix
 		var LINE_SYMBOL = SHAPE_PREFIX_NO_PAD + 'L';
@@ -40,24 +83,9 @@ class Line extends Shape {
 		var x = this.x;
 		var y = this.y;
 
-		while (true) {
-			// Current line distance
-			var xld = x - this.x;
-			var yld = y - this.y;
-			var ld2 = xld * xld + yld * yld;
-
-			if (ld2 > d2) {
-				break;
-			}
-
-			a.setSymbolAtPos(LINE_SYMBOL, Math.round(x), Math.round(y));
-
-			x += xDirNorm;
-			y += yDirNorm;
+		for (let pos of this.getPath()) {
+			a.setSymbolAtPos(LINE_SYMBOL, pos[0], pos[1]);
 		}
-
-		// Add back in the final position to account for rounding / truncation
-		a.setSymbolAtPos(LINE_SYMBOL, this.x2, this.y2);
 	}
 }
 
