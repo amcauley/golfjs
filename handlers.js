@@ -4,7 +4,7 @@ function onClick(e) {
 	cPos = gc.posToIdx(pos[0], pos[1]);
 
 	var c = new Circle(cPos[0], cPos[1], Math.ceil(WIDTH / 12), 'red');
-	gdm.add(c, 'C', 2); // TODO: Eventually, DrawManager should only be accessed through Scene.
+	gdm.add(c, 'C', 2);
 	gs.drawOnCanvas(gc);
 
 	gs.onClick(cPos[0], cPos[1]);
@@ -17,15 +17,19 @@ function onMove(e) {
 	pos = pxToPos(e.pageX, e.pageY);
 	cPos = gc.posToIdx(pos[0], pos[1]);
 
-	gs.setCursorPos(cPos[0], cPos[1]);
+	var c = new Curve(gs.ball.x, gs.ball.y, cPos[0] - gs.ball.x, cPos[1] - gs.ball.y);
+	gdm.clearTag('x');
+	gdm.add(c, 'x', 1);
+
+	//gs.setCursorPos(cPos[0], cPos[1]);
 	gs.drawOnCanvas(gc);
 }
 
 document.addEventListener("mousemove", onMove);
 
 function update(c, s) {
-	gs.update();
-	gs.drawOnCanvas(gc);
+	//gs.update();
+	//gs.drawOnCanvas(gc);
 
 	var c = document.getElementById('canvasDiv');
 	c.innerHTML = gc.getHTML();
