@@ -7,7 +7,7 @@ class Shape {
 		this.y = y;
 	}
 
-	drawOn2dArray(a) {
+	drawOn2dArray(a, startX, startY) {
 		console.log('Base clase Object has no drawOn2dArray implementation.');
 	}
 }
@@ -20,7 +20,7 @@ class Circle extends Shape {
 		this.bPad = bPad;
 	}
 
-	drawOn2dArray(a) {
+	drawOn2dArray(a, startX, startY) {
 		var padPrefix = '';
 		if (!this.bPad) {
 			padPrefix = SHAPE_PREFIX_NO_PAD;
@@ -34,7 +34,7 @@ class Circle extends Shape {
 					a.setSymbolAtPos(
 						padPrefix +
 						'<font style="background-color:' + this.color + ';">&nbsp;</font>',
-						this.x + x, this.y + y
+						this.x - startX + x, this.y - startY + y
 					);
 				}
 			}
@@ -104,12 +104,12 @@ class Line extends Shape {
 		return path;
 	}
 
-	drawOn2dArray(a) {
+	drawOn2dArray(a, startX, startY) {
 		// TODO: Pass symbols in data struct instead of as a string prefix
 		var LINE_SYMBOL = SHAPE_PREFIX_NO_PAD + 'L';
 
 		for (let pos of this.getPath()) {
-			a.setSymbolAtPos(LINE_SYMBOL, pos[0], pos[1]);
+			a.setSymbolAtPos(LINE_SYMBOL, pos[0] - startX, pos[1] - startY);
 		}
 	}
 }
@@ -176,10 +176,10 @@ class Curve extends Shape {
 		return path;
 	}
 
-	drawOn2dArray(a) {
+	drawOn2dArray(a, startX, startY) {
 		var CURVE_SYMBOL = SHAPE_PREFIX_NO_PAD + 'x';
 		for (let pos of this.getPath()) {
-			a.setSymbolAtPos(CURVE_SYMBOL, pos[0], pos[1]);
+			a.setSymbolAtPos(CURVE_SYMBOL, pos[0] - startX, pos[1] - startY);
 		}
 	}
 }

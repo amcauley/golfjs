@@ -32,7 +32,7 @@ class Ball {
 		this.shape.y = this.y;
 	}
 
-	drawOn2dArray(a) {
-		this.shape.drawOn2dArray(a);
+	drawOn2dArray(a, startX, startY) {
+		this.shape.drawOn2dArray(a, startX, startY);
 	}
 }

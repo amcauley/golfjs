@@ -7,6 +7,9 @@ class DrawManager {
 		this.objectsByTag = {};
 		// Map depth to a list of tags at that depth.
 		this.tagsByDepth = {};
+
+		this.screenPosX = 0;
+		this.screenPosY = 0;
 	}
 
 	add(o, tag, depth=0) {
@@ -29,6 +32,16 @@ class DrawManager {
 
 	clearTag(tag) {
 		this.objectsByTag[tag] = [];
+	}
+
+	// Which global position corresponds to the top left corner of the visible screen.
+	setScreenPos(x, y) {
+		this.screenPosX = x;
+		this.screenPosY = y;
+	}
+
+	getScreenPos() {
+		return [this.screenPosX, this.screenPosY];
 	}
 
 	// Get all drawable objects in order of decreasing depth
@@ -54,7 +67,7 @@ class DrawManager {
 
 		var objects = this.getAll();
 		for (const o of objects) {
-			o.drawOn2dArray(c);
+			o.drawOn2dArray(c, this.screenPosX, this.screenPosY);
 		}
 	}
 }
