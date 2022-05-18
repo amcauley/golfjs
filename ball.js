@@ -4,27 +4,23 @@ class Ball {
 		this.y = y;
 
 		this.shape = new Circle(x, y, 0, 'black', true);
-
-		this.targetX = this.x;
-		this.targetY = this.y;
-
-		this.queue = [];
+		this.pathQueue = [];
 	}
 
-	setDestination(x, y) {
-		this.targetX = x;
-		this.targetY = y;
+	setPath(path) {
+		this.pathQueue = path.reverse();
+	}
 
-		var l = new Line(this.x, this.y, x, y);
-		this.queue = l.getPath().reverse();
+	isMoving() {
+		return this.pathQueue.length > 0;
 	}
 
 	update() {
-		if (0 == this.queue.length) {
+		if (0 == this.pathQueue.length) {
 			return [this.x, this.y];
 		}
 
-		var pos = this.queue.pop();
+		var pos = this.pathQueue.pop();
 		this.x = pos[0];
 		this.y = pos[1];
 

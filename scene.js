@@ -5,6 +5,8 @@ class Scene {
 
 		this.map = new Map();
 
+		this.rawCursorX = 0;
+		this.rawCursorY = 0;
 		this.cursorX = 0;
 		this.cursorY = 0;
 	}
@@ -15,6 +17,8 @@ class Scene {
 
 	setCursorPos(x, y) {
 		var screenPos = this.dm.getScreenPos();
+		this.rawCursorX = x;
+		this.rawCursorY = y;
 		this.cursorX = x + screenPos[0];
 		this.cursorY = y + screenPos[1];
 	}
@@ -22,7 +26,9 @@ class Scene {
 	onClick(x, y) {
 		// Set the ball destination in global coords.
 		var screenPos = this.dm.getScreenPos();
-		this.ball.setDestination(x + screenPos[0], y + screenPos[1]);
+
+		var t = new Trajectory(this.ball.x, this.ball.y, this.cursorX, this.cursorY);
+		this.ball.setPath(t.getPath());
 	}
 
 	update() {
@@ -33,10 +39,6 @@ class Scene {
 		this.dm.clearTag('B');
 		this.dm.add(this.ball, 'B', 0);
 
-		var l = new Line(this.ball.x, this.ball.y, this.cursorX, this.cursorY);
-		this.dm.clearTag('L');
-		this.dm.add(l, 'L', 1);
-
 		this.dm.clearTag('M');
 		for (let o of this.map.getObjectsAtPos(0, 0)) {
 			this.dm.add(o, 'M', 2);
@@ -46,8 +48,21 @@ class Scene {
 		// corresponding to the (0, 0) screen position.
 		this.dm.setScreenPos(
 			this.ball.x - Math.ceil(WIDTH / 2),
-			this.ball.y - Math.ceil(HEIGHT / 2)
+			this.ball.y - Math.ceil(HEIGHT / 2 + HEIGHT / 4),
 		);
+
+		// Handle trajectory updates after setting screen position since
+		// the trajectory depends on the screen pos via setCursorPos().
+		this.dm.clearTag('T');
+		if (!this.ball.isMoving()) {
+			// If ball was previously in flight and the cursor hasn't moved,
+			// the cursor coordinates are out of date.
+			// Recompute them based on the last known raw position.
+			this.setCursorPos(this.rawCursorX, this.rawCursorY);
+
+			var t = new Trajectory(this.ball.x, this.ball.y, this.cursorX, this.cursorY);
+			this.dm.add(t, 'T', 1);
+		}
 
 		this.dm.drawOnCanvas(c);
 	}

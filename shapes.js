@@ -7,8 +7,12 @@ class Shape {
 		this.y = y;
 	}
 
+	getPath() {
+		console.log('No getPath implementation'); 
+	}
+
 	drawOn2dArray(a, startX, startY) {
-		console.log('Base clase Object has no drawOn2dArray implementation.');
+		console.log('No drawOn2dArray implementation');
 	}
 }
 
@@ -180,6 +184,31 @@ class Curve extends Shape {
 		var CURVE_SYMBOL = SHAPE_PREFIX_NO_PAD + 'x';
 		for (let pos of this.getPath()) {
 			a.setSymbolAtPos(CURVE_SYMBOL, pos[0] - startX, pos[1] - startY);
+		}
+	}
+}
+
+class Trajectory {
+	constructor(x1, y1, x2, y2) {
+		this.line = new Line(x1, y1, x2, y2);
+
+		this.curve = new Curve(
+			x2, y2,
+			x2 - x1,
+			y2 - y1
+		);
+	}
+
+	getPath() {
+		// Don't include the first since it's duplicated in Line and Curve.
+		return [...this.line.getPath(), ...this.curve.getPath().slice(1)];
+	}
+
+	drawOn2dArray(a, startX, startY) {
+		var TRAJECTORY_SYMBOL = SHAPE_PREFIX_NO_PAD + '*';
+
+		for (let pos of this.getPath()) {
+			a.setSymbolAtPos(TRAJECTORY_SYMBOL, pos[0] - startX, pos[1] - startY);
 		}
 	}
 }
