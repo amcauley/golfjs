@@ -119,63 +119,76 @@ class Line extends Shape {
 }
 
 class Curve extends Shape {
-	constructor(x, y, vx, vy, g=2, n=5) {
+	constructor(x, y, vx, vy, g=GRAVITY, n=CURVE_PREVIEW_N) {
 		super(x, y);
 		this.vx = vx;
 		this.vy = vy;
 		this.g = g;
 		this.n = n;
+
+		this.currX = x;
+		this.currY = y;
+		this.currVy = vy;
+		this.segStartX = x;
+		this.segStartY = y;
 	}
 
-	getPath() {
-		var x = this.x;
-		var y = this.y;
-		var vy = this.vy;
+	nextPos() {
+		var vNorm = normalize(this.vx, this.currVy);
+		var vnx = vNorm[0];
+		var vny = vNorm[1];
+
+		this.currX += vnx;
+		this.currY += vny;
+
+		var xr = Math.round(this.currX);
+		var yr = Math.round(this.currY);
+
+		// Current segment distance
+		var xd = this.currX - this.segStartX;
+		var yd = this.currY - this.segStartY;
+
+		var d2 = this.vx * this.vx + this.currVy * this.currVy;
+		// (s)hort distance, i.e. interpolated between main arc points.
+		var sd2 = xd * xd + yd * yd;
+
+		if (sd2 >= d2) {
+			this.segStartX = this.currX;
+			this.segStartY = this.currY;
+			this.currVy += this.g;
+		}
+
+		return [xr, yr];
+	}
+
+	getPath(n=null) {
+		var n = n || this.n;
+
+		// Save current state
+		var segStartX = this.segStartX;
+		var segStartY = this.segStartY;
+		var currX = this.currX;
+		var currY = this.currY;
+		var currVy = this.currVy;
+
+		// Reinit state
+		this.segStartX = this.x;
+		this.segStartY = this.y;
+		this.currX = this.x;
+		this.currY = this.y;
+		this.currVy = this.vy;
 
 		var path = [];
-
-		for (let i = 0; i < this.n ; i++) {
-			var d2 = this.vx * this.vx + vy * vy;
-
-			var xx = x;
-			var yy = y;
-
-			var vNorm = normalize(this.vx, vy);
-			var vnx = vNorm[0];
-			var vny = vNorm[1];
-
-			if ((vnx == 0) && (vny == 0)){
-				vy += this.g;
-				continue;
-			}
-
-			path.push([Math.round(xx), Math.round(yy)]);
-
-
-			while (true) {
-				xx += vnx;
-				yy += vny;
-
-				var xxr = Math.round(xx);
-				var yyr = Math.round(yy);
-
-				path.push([xxr, yyr]);
-
-				// Current line distance
-				var xd = x - xx;
-				var yd = y - yy;
-				// (s)hort distance, i.e. interpolated between main arc points.
-				var sd2 = xd * xd + yd * yd;
-
-				if (sd2 > d2) {
-					x = xxr;
-					y = yyr;
-					break;
-				}
-			}
-
-			vy += this.g;
+		for (let i = 0; i < this.n; i++) {
+			path.push(this.nextPos());
 		}
+
+		// Restore state
+		this.segStartX = segStartX;
+		this.segStartY = segStartY;
+		this.currX = currX;
+		this.currY = currY;
+		this.currVy = currVy;
 
 		return path;
 	}
@@ -200,8 +213,7 @@ class Trajectory {
 	}
 
 	getPath() {
-		// Don't include the first since it's duplicated in Line and Curve.
-		return [...this.line.getPath(), ...this.curve.getPath().slice(1)];
+		return [...this.line.getPath(), ...this.curve.getPath()];
 	}
 
 	drawOn2dArray(a, startX, startY) {
