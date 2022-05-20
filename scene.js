@@ -28,11 +28,15 @@ class Scene {
 		var screenPos = this.dm.getScreenPos();
 
 		var t = new Trajectory(this.ball.x, this.ball.y, this.cursorX, this.cursorY);
-		this.ball.setPath(t.getPath());
+		this.ball.setTrajectory(t);
+		this.ball.setMoving(true);
 	}
 
 	update() {
 		this.ball.update();
+		if (this.ball.y >= HEIGHT * 3 / 5) {
+			this.ball.setMoving(false);
+		}
 	}
 
 	drawOnCanvas(c) {

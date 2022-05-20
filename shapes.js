@@ -210,10 +210,23 @@ class Trajectory {
 			x2 - x1,
 			y2 - y1
 		);
+
+		// Current index within the trajectory path.
+		// 0 represents the starting/no-movement point.
+		this.stepIdx = 0;
 	}
 
 	getPath() {
 		return [...this.line.getPath(), ...this.curve.getPath()];
+	}
+
+	nextPos() {
+		this.stepIdx += 1;
+		var linePath = this.line.getPath();
+		if (this.stepIdx < linePath.length) {
+			return linePath[this.stepIdx];
+		}
+		return this.curve.nextPos();
 	}
 
 	drawOn2dArray(a, startX, startY) {
