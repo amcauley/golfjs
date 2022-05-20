@@ -24,6 +24,11 @@ class Scene {
 	}
 
 	onClick(x, y) {
+		// Ignore input if the ball is already in flight.
+		if (this.ball.isMoving()) {
+			return;
+		}
+
 		// Set the ball destination in global coords.
 		var screenPos = this.dm.getScreenPos();
 
