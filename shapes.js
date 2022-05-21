@@ -213,6 +213,8 @@ class Trajectory {
 
 		// Current index within the trajectory path.
 		// 0 represents the starting/no-movement point.
+		// -1 is invalid in the sense it ignores all precomputed points,
+		// instead computing a new point based on velocity/gravity each time.
 		this.stepIdx = 0;
 	}
 
@@ -221,9 +223,12 @@ class Trajectory {
 	}
 
 	nextPos() {
-		this.stepIdx += 1;
+		if (this.stepIdx >= 0) {
+			this.stepIdx += 1;
+		}
+
 		var linePath = this.line.getPath();
-		if (this.stepIdx < linePath.length) {
+		if ((this.stepIdx >= 0) && (this.stepIdx < linePath.length)) {
 			return linePath[this.stepIdx];
 		}
 		return this.curve.nextPos();

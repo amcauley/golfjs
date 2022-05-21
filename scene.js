@@ -9,6 +9,10 @@ class Scene {
 		this.rawCursorY = 0;
 		this.cursorX = 0;
 		this.cursorY = 0;
+
+		// Old ball pos, ex. from 2 iterations in the past.
+		this.queueX = [null, null];
+		this.queueY = [null, null];
 	}
 
 	setDrawManager(dm) {
@@ -37,8 +41,59 @@ class Scene {
 		this.ball.setMoving(true);
 	}
 
+	handleCollisions(lastX, lastY, map) {
+		var xIdx = this.ball.x - lastX + 1;
+		var yIdx = this.ball.y - lastY + 1;
+
+		if (this.ball.isMoving()) {
+			console.log(this.ball.x, this.ball.y);
+		}
+
+		if (map[yIdx][xIdx] != 0) {
+			// For now just reset to the previous good position
+			// and kill all horizontal velocity
+
+			// TODO: Delegate these to methods within ball and trajectory
+			this.ball.x = lastX;
+			this.ball.y = lastY;
+			this.ball.shape.x = lastX;
+			this.ball.shape.y = lastY;
+			this.ball.trajectory.curve.currX = lastX;
+			this.ball.trajectory.curve.currY = lastY;
+			this.ball.trajectory.curve.vx = 0;
+			this.ball.trajectory.stepIdx = -1;
+		}
+
+		// No movement in the last 2 updates.
+		// TODO: Look into cleaning trajectory to remove duplicate positions,
+		// which could help simplify the checks here.
+		if ((this.queueX[0] == this.ball.x) &&
+			(this.queueY[0] == this.ball.y) &&
+			(this.queueX[1] == this.ball.x) &&
+			(this.queueY[1] == this.ball.y)) {
+			this.ball.setMoving(false);
+		}
+
+		// update position queues.
+		// TODO: Move into a separate queue class.
+		this.queueX = [lastX, this.queueX[0]];
+		this.queueY = [lastY, this.queueY[0]];
+	}
+
 	update() {
+		var lastX = this.ball.x;
+		var lastY = this.ball.y;
+
 		this.ball.update();
+
+		var m = this.map.getObstacleMapAtPos(
+			lastX - 1,
+			lastY - 1,
+			3, 3);
+
+		this.handleCollisions(lastX, lastY, m);
+
+		// Keep from falling infinitiely during testing.
 		if (this.ball.y >= HEIGHT * 3 / 5) {
 			this.ball.setMoving(false);
 		}

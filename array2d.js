@@ -12,6 +12,8 @@ function get2dArray(w, h, s='') {
 
 class Array2d {
 	constructor(w, h, s='') {
+		this.w = w;
+		this.h = h;
 		this.a = get2dArray(w, h, s);
 	}
 
@@ -25,7 +27,7 @@ class Array2d {
 	// should let the underlying circle color through.
 	// Also, rename to something like setSymbolAtPos.
 	setSymbolAtPos(s, x, y) {
-		if (x >= 0 && y >= 0 && x < WIDTH && y < HEIGHT) {
+		if (x >= 0 && y >= 0 && x < this.w && y < this.h) {
 			this.a[y][x] = s;
 		}
 	}
