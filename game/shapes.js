@@ -16,6 +16,15 @@ class Shape {
 	}
 }
 
+class BgGrid extends Shape {
+	constructor(x, y, gridPath) {
+		super(x, y);
+		this.gridPath = gridPath;
+	}
+
+	// TODO: Create tool to preprocess images into JSON mapping x, y to RGB
+}
+
 class Circle extends Shape {
 	constructor (x, y, r, color='black', bPad=true) {
 		super(x, y);
