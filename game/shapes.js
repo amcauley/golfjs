@@ -17,12 +17,29 @@ class Shape {
 }
 
 class BgGrid extends Shape {
-	constructor(x, y, gridPath) {
+	constructor(x, y, src) {
 		super(x, y);
-		this.gridPath = gridPath;
+		this.src = src;
+
+		var mapData = gMapData[src];
+		this.width = mapData['size'][0];
+		this.height = mapData['size'][1];
+		this.data = mapData['data'];
 	}
 
-	// TODO: Create tool to preprocess images into JSON mapping x, y to RGB
+	drawOn2dArray(a, startX, startY) {
+		for (let x = 0; x < this.width; x++) {
+			for (let y = 0; y < this.height; y++) {
+				var sample = this.data[y][x];
+
+				// TODO: Combine RGB values
+				var symbol = String(sample[0])[0];
+				if (symbol != '2') {
+					a.setSymbolAtPos(symbol, this.x + x - startX, this.y + y - startY);
+				}
+			}
+		}
+	}
 }
 
 class Circle extends Shape {

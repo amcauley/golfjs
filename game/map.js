@@ -2,8 +2,9 @@ class Map {
 	constructor(filename=null) {
 		// TODO: Init from some config file
 		this.objects = [
-			new Circle(Math.ceil(WIDTH/4), Math.ceil(WIDTH/3), Math.ceil(WIDTH/10), 'blue'),
-			new Circle(Math.ceil(WIDTH*4/5), Math.ceil(WIDTH/2), Math.ceil(WIDTH/6), 'green')
+			new Circle(Math.ceil(WIDTH/4), Math.ceil(HEIGHT/3), Math.ceil(WIDTH/10), 'blue'),
+			new Circle(Math.ceil(WIDTH*4/5), Math.ceil(HEIGHT/2), Math.ceil(WIDTH/6), 'green'),
+			new BgGrid(0, 0, 'test'),
 		];
 	}
 

@@ -3,10 +3,6 @@ function onClick(e) {
 	pos = pxToPos(e.pageX, e.pageY);
 	cPos = gc.posToIdx(pos[0], pos[1]);
 
-	//var c = new Circle(cPos[0], cPos[1], Math.ceil(WIDTH / 12), 'red');
-	//gdm.add(c, 'C', 2);
-	//gs.drawOnCanvas(gc);
-
 	gs.onClick(cPos[0], cPos[1]);
 }
 
@@ -16,10 +12,6 @@ function onMove(e) {
 	//console.log("m x " + e.pageX + ", y " + e.pageY);
 	pos = pxToPos(e.pageX, e.pageY);
 	cPos = gc.posToIdx(pos[0], pos[1]);
-
-	//var c = new Curve(gs.ball.x, gs.ball.y, cPos[0] - gs.ball.x, cPos[1] - gs.ball.y);
-	//gdm.clearTag('x');
-	//gdm.add(c, 'x', 1);
 
 	gs.setCursorPos(cPos[0], cPos[1]);
 	gs.drawOnCanvas(gc);
