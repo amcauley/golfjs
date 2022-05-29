@@ -32,9 +32,8 @@ class BgGrid extends Shape {
 			for (let y = 0; y < this.height; y++) {
 				var sample = this.data[y][x];
 
-				// TODO: Combine RGB values
-				var symbol = String(sample[0])[0];
-				if (symbol != '2') {
+				if (sample in gColorSymbolMap) {
+					var symbol = gColorSymbolMap[sample];
 					a.setSymbolAtPos(symbol, this.x + x - startX, this.y + y - startY);
 				}
 			}

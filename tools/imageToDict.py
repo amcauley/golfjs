@@ -13,7 +13,12 @@ def imageToDict(imagePath):
         for y in range(h):
             row = []
             for x in range(w):
-                row.append([*px[x, y]])
+                pixData = px[x, y]
+                # For monochrome BMP, data is a single value
+                if isinstance(pixData, int):
+                    row.append(pixData)
+                else:
+                    row.append([*pixData])
             pixArray.append(row)
 
     dOut = {
@@ -26,4 +31,9 @@ def imageToDict(imagePath):
 if __name__ == "__main__":
     imagePath = sys.argv[1]
     dOut = imageToDict(imagePath)
-    print(dOut)
+
+    uniqueVals = set()
+    for row in dOut['data']:
+        uniqueVals = uniqueVals.union(set(row))
+
+    print(f'Unique values: {sorted(uniqueVals)}')

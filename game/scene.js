@@ -94,7 +94,7 @@ class Scene {
 		this.handleCollisions(lastX, lastY, m);
 
 		// Keep from falling infinitiely during testing.
-		if (this.ball.y >= HEIGHT * 3 / 5) {
+		if (this.ball.y >= HEIGHT * 4 / 5) {
 			this.ball.setMoving(false);
 		}
 	}

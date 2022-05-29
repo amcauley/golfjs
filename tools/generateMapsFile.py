@@ -8,10 +8,24 @@ import sys
 import imageToDict
 
 DEFAULT_OUTPUT_FILEPATH = os.path.join('..', 'game', 'mapData.js')
-MAP_VARIABLE_NAME = 'gMapData'
+DEFAULT_COLOR_SYMBOL_FILEPATH = 'colorSymbolMap.json'
 
-def generateMapsFile(imagePaths, outputFilePath=None):
+VAR_NAME_COLOR_SYMBOL_MAP = 'gColorSymbolMap'
+VAR_NAME_DATA_MAP = 'gMapData'
+
+def jsonDictToIntKeyStrValJsStr(d):
+    keysAndValues = ','.join(f'{int(k)}:\'{v}\'' for k, v in d.items())
+    return '{' + keysAndValues + '}'
+
+def generateMapsFile(imagePaths, outputFilePath=None, colorSymbolFilePath=None):
     dMaps = {}
+
+    jsContent = ''
+
+    colorSymbolFilePath = colorSymbolFilePath or DEFAULT_COLOR_SYMBOL_FILEPATH
+    with open(colorSymbolFilePath, 'r') as cs:
+        dColorSymbol = json.load(cs)
+        jsContent = f'var {VAR_NAME_COLOR_SYMBOL_MAP} = {jsonDictToIntKeyStrValJsStr(dColorSymbol)};'
 
     for imagePath in imagePaths:
         _baseDir, fileName = os.path.split(imagePath)
@@ -20,7 +34,7 @@ def generateMapsFile(imagePaths, outputFilePath=None):
         dMaps[name] = imageToDict.imageToDict(imagePath)
 
     s = json.dumps(dMaps)
-    jsContent = f'var {MAP_VARIABLE_NAME} = {s};'
+    jsContent += f'\n\nvar {VAR_NAME_DATA_MAP} = {s};'
 
     outputFilePath = outputFilePath or DEFAULT_OUTPUT_FILEPATH
 
