@@ -1,7 +1,7 @@
 class Scene {
 	constructor(drawManager=null) {
 		this.dm = drawManager || new DrawManager();
-		this.ball = new Ball(Math.ceil(WIDTH / 2), Math.ceil(HEIGHT / 2));
+		this.ball = new Ball(Math.ceil(WIDTH / 2), Math.ceil(HEIGHT / 2) + 20);
 
 		this.map = new Map();
 

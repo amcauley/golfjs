@@ -19,22 +19,60 @@ class Shape {
 class BgGrid extends Shape {
 	constructor(x, y, src) {
 		super(x, y);
-		this.src = src;
+		this.src = src; // todo: remove
 
-		var mapData = gMapData[src];
-		this.width = mapData['size'][0];
-		this.height = mapData['size'][1];
-		this.data = mapData['data'];
+		this.blockWidth = 20;
+		this.blockHeight = 20;
 	}
 
 	drawOn2dArray(a, startX, startY) {
-		for (let x = 0; x < this.width; x++) {
-			for (let y = 0; y < this.height; y++) {
-				var sample = this.data[y][x];
+		var blockX = Math.floor(startX / this.blockWidth);
+		var blockY = Math.floor(startY / this.blockHeight);
 
-				if (sample in gColorSymbolMap) {
-					var symbol = gColorSymbolMap[sample];
-					a.setSymbolAtPos(symbol, this.x + x - startX, this.y + y - startY);
+		var blockKey = blockX + ',' + blockY;
+		var blockIds = gBlockMap[blockKey];
+		console.log('block key:', blockKey, 'ids:', blockIds);
+
+		if (blockIds == undefined) {
+			return;
+		}
+
+		// vert, horiz block adjustments
+		var dirAdjs = [
+			[ 0,  0], //self
+			[ 1,  0], //up
+			[-1,  0], //down
+			[ 0, -1], //left
+			[ 0,  1], //right
+			[ 1, -1], //upLeft
+			[ 1,  1], //upRight
+			[-1, -1], //downLeft
+			[-1,  1]  //downRight
+		];
+
+		var nIdx = 0;
+		for (let blockId of blockIds) {
+			var dirAdj = dirAdjs[nIdx];
+			var vAdj = dirAdj[0];
+			var hAdj = dirAdj[1];
+			nIdx += 1;
+
+			var blockData = gMapData[blockId];
+			if (blockData == undefined) {
+				continue;
+			}
+
+			for (let x = 0; x < this.blockWidth; x++) {
+				for (let y = 0; y < this.blockHeight; y++) {
+					var sample = blockData[y][x];
+					if (sample in gColorSymbolMap) {
+						var symbol = gColorSymbolMap[sample];
+						a.setSymbolAtPos(
+							symbol,
+							this.x + x - startX + this.blockWidth * hAdj,
+							this.y + y - startY + this.blockHeight * vAdj,
+						);
+					}
 				}
 			}
 		}
