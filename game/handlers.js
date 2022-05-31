@@ -33,8 +33,8 @@ function init() {
 	gs.setDrawManager(gdm);
 	gs.drawOnCanvas(gc);
 
-	update()
-	//setInterval(update, REFRESH_MS);
+	//update();
+	setInterval(update, REFRESH_MS);
 }
 
 window.onload = init;

@@ -42,14 +42,14 @@ def generateActiveBlockMapStr(dImage):
     for yBlock in range(hBlocks):
         for xBlock in range(wBlocks):
             self = idx
+            up = (idx - wBlocks) if (yBlock > 0) else -1
+            down = (idx + wBlocks) if (yBlock < hBlocks - 1) else -1
             left = (idx - 1) if (xBlock > 0) else -1
             right = (idx + 1) if (xBlock < wBlocks - 1) else -1
-            up = (idx - hBlocks) if (yBlock > 0) else -1
-            down = (idx + hBlocks) if (yBlock < hBlocks - 1) else -1
-            upLeft = -1
-            upRight = -1
-            downLeft = -1
-            downRight = -1
+            upLeft = (up - 1) if (up > 0) else -1
+            upRight = (up + 1) if (up >= 0 and right >= 0) else -1
+            downLeft = (down - 1) if (down >= 0 and left >= 0) else -1
+            downRight = (down + 1) if (down >= 0 and right >= 0) else -1
 
             idx += 1
 
@@ -77,15 +77,20 @@ def generateMapStr(dImage):
         while (blockStartX < w):
             blockData = []
             for yy in range(V_STEP_SIZE):
+                y = blockStartY + yy
                 row = []
                 for xx in range(H_STEP_SIZE):
-                    if yy >= h or xx >= w:
+                    x = blockStartX + xx
+                    if y >= h or x >= w:
                         row.append(-1) # Invalid data
                     else:
-                        row.append(dImage['data'][yy][xx])
+                        row.append(dImage['data'][y][x])
                 blockData.append(row)
 
-            blockEntries.append(f'{blockIdx}: {blockData}')
+            blockPosStr = f"'blockXY':[{blockX}, {blockY}]"
+            blockDataStr = f"'data':{blockData}"
+            blockDStr = '{' + blockPosStr + ',' + blockDataStr + '}'
+            blockEntries.append(f"{blockIdx}:{blockDStr}")
 
             print(f'block {blockX},{blockY} -> idx {blockIdx}')
             blockX += 1

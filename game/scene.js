@@ -92,11 +92,6 @@ class Scene {
 			3, 3);
 
 		this.handleCollisions(lastX, lastY, m);
-
-		// Keep from falling infinitiely during testing.
-		if (this.ball.y >= HEIGHT * 4 / 5) {
-			this.ball.setMoving(false);
-		}
 	}
 
 	drawOnCanvas(c) {
@@ -112,7 +107,7 @@ class Scene {
 		// corresponding to the (0, 0) screen position.
 		this.dm.setScreenPos(
 			this.ball.x - Math.ceil(WIDTH / 2),
-			this.ball.y - Math.ceil(HEIGHT / 2 + HEIGHT / 4),
+			this.ball.y - Math.ceil(HEIGHT * 2 / 3),
 		);
 
 		// Handle trajectory updates after setting screen position since

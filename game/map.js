@@ -2,7 +2,7 @@ class Map {
 	constructor(filename=null) {
 		// TODO: Init from some config file
 		this.objects = [
-			new BgGrid(0, 3, 'testMonochrome'),
+			new BgGrid(0, 22),
 		];
 	}
 
