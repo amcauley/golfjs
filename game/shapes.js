@@ -19,20 +19,19 @@ class Shape {
 class BgGrid extends Shape {
 	constructor(x, y) {
 		super(x, y);
-
-		// TODO: Don't hardcode
-		this.blockWidth = 20;
-		this.blockHeight = 20;
 	}
 
 	drawOn2dArray(a, startX, startY) {
-		var blockX = Math.floor((startX - this.x) / this.blockWidth);
-		var blockY = Math.floor((startY - this.y) / this.blockHeight);
+		var blockWidth = gBlockSizeXY[0];
+		var blockHeight = gBlockSizeXY[1];
+
+		var blockX = Math.floor((startX - this.x) / blockWidth);
+		var blockY = Math.floor((startY - this.y) / blockHeight);
 
 		// If out of bounds, act as if the closes grid point is active.
 		// This'll prevent the map from disappearing.
-		blockX = Math.min(Math.max(blockX, 0), this.blockWidth - 1);
-		blockY = Math.min(Math.max(blockY, 0), this.blockHeight - 1);
+		blockX = Math.min(Math.max(blockX, 0), blockWidth - 1);
+		blockY = Math.min(Math.max(blockY, 0), blockHeight - 1);
 
 		var blockKey = blockX + ',' + blockY;
 		var blockIds = gBlockMap[blockKey];
@@ -48,15 +47,15 @@ class BgGrid extends Shape {
 				continue;
 			}
 
-			for (let x = 0; x < this.blockWidth; x++) {
-				for (let y = 0; y < this.blockHeight; y++) {
+			for (let x = 0; x < blockWidth; x++) {
+				for (let y = 0; y < blockHeight; y++) {
 					var sample = block['data'][y][x];
 					if (sample in gColorSymbolMap) {
 						var symbol = gColorSymbolMap[sample];
 						a.setSymbolAtPos(
 							symbol,
-							this.x + x - startX + this.blockWidth * block['blockXY'][0],
-							this.y + y - startY + this.blockHeight * block['blockXY'][1],
+							this.x + x - startX + blockWidth * block['blockXY'][0],
+							this.y + y - startY + blockHeight * block['blockXY'][1],
 						);
 					}
 				}

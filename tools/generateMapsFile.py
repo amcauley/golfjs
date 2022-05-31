@@ -13,10 +13,11 @@ DEFAULT_COLOR_SYMBOL_FILEPATH = 'colorSymbolMap.json'
 
 VAR_NAME_COLOR_SYMBOL_MAP = 'gColorSymbolMap'
 VAR_NAME_DATA_MAP = 'gMapData'
+VAR_NAME_BLOCK_SIZE = 'gBlockSizeXY'
 VAR_NAME_BLOCK_MAP = 'gBlockMap'
 
-H_STEP_SIZE = 20
-V_STEP_SIZE = 20
+H_STEP_SIZE = 50
+V_STEP_SIZE = 50
 
 def jsonDictToIntKeyStrValJsStr(d):
     keysAndValues = ','.join(f'{int(k)}:\'{v}\'' for k, v in d.items())
@@ -28,6 +29,9 @@ def generateColorSymbolMapStr(colorSymbolFilePath):
         dColorSymbol = json.load(cs)
         s = f'var {VAR_NAME_COLOR_SYMBOL_MAP} = {jsonDictToIntKeyStrValJsStr(dColorSymbol)};'
     return s
+
+def generateBlockSizeStr():
+    return f'var {VAR_NAME_BLOCK_SIZE} = [{H_STEP_SIZE}, {V_STEP_SIZE}];'
 
 def generateActiveBlockMapStr(dImage):
     # Map of current coordinate to the nearby blocks that should be drawn.
@@ -114,6 +118,8 @@ def generateMapsFile(imagePath, outputFilePath=None, colorSymbolFilePath=None):
 
     colorSymbolFilePath = colorSymbolFilePath or DEFAULT_COLOR_SYMBOL_FILEPATH
     jsContent = generateColorSymbolMapStr(colorSymbolFilePath)
+
+    jsContent += f'\n\n{generateBlockSizeStr()}'
 
     blockMapStr = generateActiveBlockMapStr(dImage)
     jsContent += f'\n\n{blockMapStr}'
