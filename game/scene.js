@@ -39,6 +39,9 @@ class Scene {
 		var t = new Trajectory(this.ball.x, this.ball.y, this.cursorX, this.cursorY);
 		this.ball.setTrajectory(t);
 		this.ball.setMoving(true);
+
+		var hitSounds = ['clap', 'snap'];
+		gam.play(hitSounds[Math.floor(Math.random() * hitSounds.length)]);
 	}
 
 	handleCollisions(lastX, lastY, map) {
