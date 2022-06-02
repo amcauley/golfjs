@@ -19,7 +19,7 @@ function onMove(e) {
 
 document.addEventListener("mousemove", onMove);
 
-function update(c, s) {
+function update() {
 	gs.update();
 	gs.drawOnCanvas(gc);
 
@@ -33,6 +33,7 @@ function init() {
 	gs.setDrawManager(gdm);
 	gs.drawOnCanvas(gc);
 
+	//update();
 	setInterval(update, REFRESH_MS);
 }
 

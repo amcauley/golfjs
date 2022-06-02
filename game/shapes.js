@@ -17,24 +17,47 @@ class Shape {
 }
 
 class BgGrid extends Shape {
-	constructor(x, y, src) {
+	constructor(x, y) {
 		super(x, y);
-		this.src = src;
-
-		var mapData = gMapData[src];
-		this.width = mapData['size'][0];
-		this.height = mapData['size'][1];
-		this.data = mapData['data'];
 	}
 
 	drawOn2dArray(a, startX, startY) {
-		for (let x = 0; x < this.width; x++) {
-			for (let y = 0; y < this.height; y++) {
-				var sample = this.data[y][x];
+		var blockWidth = gBlockSizeXY[0];
+		var blockHeight = gBlockSizeXY[1];
 
-				if (sample in gColorSymbolMap) {
-					var symbol = gColorSymbolMap[sample];
-					a.setSymbolAtPos(symbol, this.x + x - startX, this.y + y - startY);
+		var blockX = Math.floor((startX - this.x) / blockWidth);
+		var blockY = Math.floor((startY - this.y) / blockHeight);
+
+		// If out of bounds, act as if the closes grid point is active.
+		// This'll prevent the map from disappearing.
+		blockX = Math.min(Math.max(blockX, 0), blockWidth - 1);
+		blockY = Math.min(Math.max(blockY, 0), blockHeight - 1);
+
+		var blockKey = blockX + ',' + blockY;
+		var blockIds = gBlockMap[blockKey];
+		//console.log('block key:', blockKey, 'ids:', blockIds);
+
+		if (blockIds == undefined) {
+			return;
+		}
+
+		for (let blockId of blockIds) {
+			var block = gMapData[blockId];
+			if (block == undefined) {
+				continue;
+			}
+
+			for (let x = 0; x < blockWidth; x++) {
+				for (let y = 0; y < blockHeight; y++) {
+					var sample = block['data'][y][x];
+					if (sample in gColorSymbolMap) {
+						var symbol = gColorSymbolMap[sample];
+						a.setSymbolAtPos(
+							symbol,
+							this.x + x - startX + blockWidth * block['blockXY'][0],
+							this.y + y - startY + blockHeight * block['blockXY'][1],
+						);
+					}
 				}
 			}
 		}

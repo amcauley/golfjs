@@ -1,7 +1,7 @@
 class Scene {
 	constructor(drawManager=null) {
 		this.dm = drawManager || new DrawManager();
-		this.ball = new Ball(Math.ceil(WIDTH / 2), Math.ceil(HEIGHT / 2));
+		this.ball = new Ball(Math.ceil(WIDTH / 2), Math.ceil(HEIGHT / 2) + 20);
 
 		this.map = new Map();
 
@@ -39,6 +39,9 @@ class Scene {
 		var t = new Trajectory(this.ball.x, this.ball.y, this.cursorX, this.cursorY);
 		this.ball.setTrajectory(t);
 		this.ball.setMoving(true);
+
+		var hitSounds = ['clap', 'snap'];
+		gam.play(hitSounds[Math.floor(Math.random() * hitSounds.length)]);
 	}
 
 	handleCollisions(lastX, lastY, map) {
@@ -92,11 +95,6 @@ class Scene {
 			3, 3);
 
 		this.handleCollisions(lastX, lastY, m);
-
-		// Keep from falling infinitiely during testing.
-		if (this.ball.y >= HEIGHT * 4 / 5) {
-			this.ball.setMoving(false);
-		}
 	}
 
 	drawOnCanvas(c) {
@@ -112,7 +110,7 @@ class Scene {
 		// corresponding to the (0, 0) screen position.
 		this.dm.setScreenPos(
 			this.ball.x - Math.ceil(WIDTH / 2),
-			this.ball.y - Math.ceil(HEIGHT / 2 + HEIGHT / 4),
+			this.ball.y - Math.ceil(HEIGHT * 2 / 3),
 		);
 
 		// Handle trajectory updates after setting screen position since
