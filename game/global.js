@@ -5,3 +5,4 @@ var CHAR_PAD_V = 0;
 var REFRESH_MS = 50;
 var GRAVITY = 3;
 var CURVE_PREVIEW_N = 30;
+var BALL_LAUNCH_SPEED = 2;

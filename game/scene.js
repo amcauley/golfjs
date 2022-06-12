@@ -1,7 +1,7 @@
 class Scene {
 	constructor(drawManager=null) {
 		this.dm = drawManager || new DrawManager();
-		this.ball = new Ball(Math.ceil(WIDTH / 2), Math.ceil(HEIGHT / 2) + 20);
+		this.ball = new Ball(Math.ceil(WIDTH / 2), Math.ceil(HEIGHT / 2) + 20, BALL_LAUNCH_SPEED);
 
 		this.map = new Map();
 
@@ -39,6 +39,7 @@ class Scene {
 		var t = new Trajectory(this.ball.x, this.ball.y, this.cursorX, this.cursorY);
 		this.ball.setTrajectory(t);
 		this.ball.setMoving(true);
+		this.ball.speed2 = this.ball.launchSpeed2;
 
 		var hitSounds = ['clap', 'snap'];
 		gam.play(hitSounds[Math.floor(Math.random() * hitSounds.length)]);
@@ -49,7 +50,7 @@ class Scene {
 		var yIdx = this.ball.y - lastY + 1;
 
 		if (this.ball.isMoving()) {
-			console.log(this.ball.x, this.ball.y);
+			console.log(lastX + ' ' + lastY + ' -> ' + this.ball.x + ' ' + this.ball.y);
 		}
 
 		if (map[yIdx][xIdx] != 0) {
@@ -84,17 +85,35 @@ class Scene {
 	}
 
 	update() {
-		var lastX = this.ball.x;
-		var lastY = this.ball.y;
+		// The ball knows which path it will take, but doesn't manage distance.
+		// That's handled by the scene so that it can check collisions at every step.
+		// Take a snapshot of the speed and use it to determine travel distance.
+		// TODO: Compute based on height, i.e. energy conserved but converted to potential.
+		var distLimit2 = this.ball.speed2;
+		var dist2 = 0;
 
-		this.ball.update();
+		while(this.ball.isMoving()) {
+			//console.log('mvmt loop');
+			var lastX = this.ball.x;
+			var lastY = this.ball.y;
 
-		var m = this.map.getObstacleMapAtPos(
-			lastX - 1,
-			lastY - 1,
-			3, 3);
+			this.ball.update();
 
-		this.handleCollisions(lastX, lastY, m);
+			var m = this.map.getObstacleMapAtPos(
+				lastX - 1,
+				lastY - 1,
+				3, 3);
+
+			this.handleCollisions(lastX, lastY, m);
+
+			var distX = this.ball.x - lastX;
+			var distY = this.ball.y - lastY;
+			dist2 += distX * distX + distY * distY;
+
+			if (dist2 > distLimit2) {
+				break;
+			}
+		}
 	}
 
 	drawOnCanvas(c) {
