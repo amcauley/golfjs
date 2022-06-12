@@ -140,17 +140,15 @@ class Line extends Shape {
 				break;
 			}
 
-			path.push([Math.round(x), Math.round(y)]);
+			path.push([x, y]);
 
 			x += xDirNorm;
 			y += yDirNorm;
 		}
 
 		var last = path[path.length - 1];
-		var x2Round = Math.round(this.x2);
-		var y2Round = Math.round(this.y2);
-		if ((last[0] != x2Round) || (last[1] != y2Round)) {
-			path.push([x2Round, y2Round]);
+		if ((last[0] != this.x2) || (last[1] != this.y2)) {
+			path.push([this.x2, this.y2]);
 		}
 
 		return path;
@@ -161,7 +159,7 @@ class Line extends Shape {
 		var LINE_SYMBOL = SHAPE_PREFIX_NO_PAD + 'L';
 
 		for (let pos of this.getPath()) {
-			a.setSymbolAtPos(LINE_SYMBOL, pos[0] - startX, pos[1] - startY);
+			a.setSymbolAtPos(LINE_SYMBOL, Math.round(pos[0] - startX), Math.round(pos[1] - startY));
 		}
 	}
 }
@@ -189,8 +187,8 @@ class Curve extends Shape {
 		this.currX += vnx;
 		this.currY += vny;
 
-		var xr = Math.round(this.currX);
-		var yr = Math.round(this.currY);
+		//var xr = Math.round(this.currX);
+		//var yr = Math.round(this.currY);
 
 		// Current segment distance
 		var xd = this.currX - this.segStartX;
@@ -206,7 +204,7 @@ class Curve extends Shape {
 			this.currVy += this.g;
 		}
 
-		return [xr, yr];
+		return [this.currX, this.currY];
 	}
 
 	getPath(n=null) {
@@ -244,7 +242,7 @@ class Curve extends Shape {
 	drawOn2dArray(a, startX, startY) {
 		var CURVE_SYMBOL = SHAPE_PREFIX_NO_PAD + 'x';
 		for (let pos of this.getPath()) {
-			a.setSymbolAtPos(CURVE_SYMBOL, pos[0] - startX, pos[1] - startY);
+			a.setSymbolAtPos(CURVE_SYMBOL, Math.round(pos[0] - startX), Math.round(pos[1] - startY));
 		}
 	}
 }
@@ -286,7 +284,7 @@ class Trajectory {
 		var TRAJECTORY_SYMBOL = SHAPE_PREFIX_NO_PAD + '*';
 
 		for (let pos of this.getPath()) {
-			a.setSymbolAtPos(TRAJECTORY_SYMBOL, pos[0] - startX, pos[1] - startY);
+			a.setSymbolAtPos(TRAJECTORY_SYMBOL, Math.round(pos[0] - startX), Math.round(pos[1] - startY));
 		}
 	}
 }

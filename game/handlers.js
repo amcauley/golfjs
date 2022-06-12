@@ -1,7 +1,7 @@
 function onClick(e) {
     console.log("c x " + e.pageX + ", y " + e.pageY);
 	pos = pxToPos(e.pageX, e.pageY);
-	cPos = gc.posToIdx(pos[0], pos[1]);
+	cPos = gc.posToFractionalIdx(pos[0], pos[1]);
 
 	gs.onClick(cPos[0], cPos[1]);
 }
@@ -11,7 +11,8 @@ document.addEventListener("click", onClick);
 function onMove(e) {
 	//console.log("m x " + e.pageX + ", y " + e.pageY);
 	pos = pxToPos(e.pageX, e.pageY);
-	cPos = gc.posToIdx(pos[0], pos[1]);
+	//cPos = gc.posToIdx(pos[0], pos[1]);
+	cPos = gc.posToFractionalIdx(pos[0], pos[1]);
 
 	gs.setCursorPos(cPos[0], cPos[1]);
 	gs.drawOnCanvas(gc);

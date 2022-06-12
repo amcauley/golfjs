@@ -17,10 +17,10 @@ class Canvas {
 		this.arr.setSymbolAtPos(s, x, y);
 	}
 
-	// Convert possibly-fractional x, y indices to an index for the closest character
-	posToIdx(x, y) {
-		var cx = Math.max(0, Math.min(WIDTH - 1, Math.round(x)));
-		var cy = Math.max(0, Math.min(HEIGHT - 1, Math.round(y)));
+	// Clamp possibly-fractional x, y indices to the max width & height range
+	posToFractionalIdx(x, y) {
+		var cx = Math.max(0, Math.min(WIDTH - 1, x));
+		var cy = Math.max(0, Math.min(HEIGHT - 1, y));
 
 		return [cx, cy];
 	}

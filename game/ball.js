@@ -26,8 +26,8 @@ class Ball {
 		}
 
 		var pos = this.trajectory.nextPos();
-		this.x = pos[0];
-		this.y = pos[1];
+		this.x = Math.round(pos[0]);
+		this.y = Math.round(pos[1]);
 
 		this.shape.x = this.x;
 		this.shape.y = this.y;
